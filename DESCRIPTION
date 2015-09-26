@@ -7,4 +7,4 @@ Authors@R: person("Sebastian", "Kranz", email = "sebastian.kranz@uni-ulm.de", ro
 Description: Quiz widget for shiny events apps
 License: GPL >= 2.0
 LazyData: TRUE
-Depends: markdown, shinyEvents
+Depends: markdown, shinyEvents, YamlObjects

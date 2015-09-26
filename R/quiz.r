@@ -59,14 +59,26 @@ quizDefaults = function(lang="en") {
 #' Create a shiny quiz widget
 #'
 #' @param id the id of the quiz
-#' @param yaml a yaml string that specifies the quize
+#' @param qu a list that contains the quiz fields as would have
+#'        been parsed by read.yaml from package YamlObjects
+#' @param yaml alternatively to qu, is yaml a string that specifies the quiz
 #' @param quiz.handler a function that will be called if the quiz is checked.
 #'        The boolean argument solved is TRUE if the quiz was solved
 #'        and otherwise FALSE
-shinyQuiz = function(id=paste0("quiz_",sample.int(10e10,1)), yaml, quiz.handler=NULL, add.handler=TRUE, single.check.btn=TRUE, defaults=quizDefaults(lang=lang), lang="en") {
+shinyQuiz = function(id=paste0("quiz_",sample.int(10e10,1)),qu=NULL, yaml,  quiz.handler=NULL, add.handler=TRUE, single.check.btn=TRUE, defaults=quizDefaults(lang=lang), lang="en") {
   restore.point("shinyQuiz")
 
-  qu = parse.quiz.yaml(yaml, id)
+  if (is.null(qu)) {
+    qu = read.yaml(text=yaml)
+  }
+
+  if (is.null(qu[["id"]])) {
+    qu$id = id
+  }
+  if (is.null(qu$parts)) {
+    qu$parts = list(qu)
+  }
+
 
   qu$single.check.btn = single.check.btn
   if (qu$single.check.btn) {
@@ -81,21 +93,6 @@ shinyQuiz = function(id=paste0("quiz_",sample.int(10e10,1)), yaml, quiz.handler=
 
   if (add.handler)
     add.quiz.handlers(qu, quiz.handler)
-  qu
-}
-
-parse.quiz.yaml = function(yaml, id=paste0("quiz_",sample.int(10e10,1))) {
-  restore.point("parse.quiz.yaml")
-  library(YamlObjects)
-  qu = read.yaml(text=yaml)
-
-  if (is.null(qu[["id"]])) {
-    qu$id = id
-  }
-  if (is.null(qu$parts)) {
-    qu$parts = list(qu)
-  }
-
   qu
 }
 

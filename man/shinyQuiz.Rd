@@ -4,14 +4,17 @@
 \alias{shinyQuiz}
 \title{Create a shiny quiz widget}
 \usage{
-shinyQuiz(id = paste0("quiz_", sample.int(1e+11, 1)), yaml,
+shinyQuiz(id = paste0("quiz_", sample.int(1e+11, 1)), qu = NULL, yaml,
   quiz.handler = NULL, add.handler = TRUE, single.check.btn = TRUE,
   defaults = quizDefaults(lang = lang), lang = "en")
 }
 \arguments{
 \item{id}{the id of the quiz}
 
-\item{yaml}{a yaml string that specifies the quize}
+\item{qu}{a list that contains the quiz fields as would have
+been parsed by read.yaml from package YamlObjects}
+
+\item{yaml}{alternatively to qu, is yaml a string that specifies the quiz}
 
 \item{quiz.handler}{a function that will be called if the quiz is checked.
 The boolean argument solved is TRUE if the quiz was solved

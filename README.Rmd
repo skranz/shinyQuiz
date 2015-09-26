@@ -8,14 +8,16 @@ output:
 Works for shiny events apps (see shinyEvents package). A quiz is currently described in yaml format and then parsed into R.
 ```{r include=FALSE}
 library(shinyQuiz)
-# A simple multiple choice quiz
+# A simple single choice quiz
 yaml = '
 question: What is 20*20?
-mc:
+sc:
   - 100
   - 200
   - 400*
   - 500
+success: Great, your answer is correct!
+failure: Try again.
 '
 
 qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
@@ -30,11 +32,13 @@ library(shinyQuiz)
 # A simple multiple choice quiz
 yaml = '
 question: What is 20*20?
-mc:
+sc:
   - 100
   - 200
   - 400*
   - 500
+success: Great, your answer is correct!
+failure: Try again.
 '
 
 # A shiny app with events handling from shinyEvents
@@ -59,5 +63,29 @@ p(qu$ui)
 ```{r results='asis'}
 ui = quiz.ui(qu, solution=TRUE)
 p(ui)
+```
+
+### A quiz with mutliple parts
+
+```{r results='asis'}
+yaml = '
+parts:
+  - question: Which are square numbers?
+    mc:
+      - 12
+      - 16*
+      - 25*
+      - 88
+  - question: State pi up to 2 digits
+    answer: 3.14
+    roundto: 0.01
+'
+
+qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
+  cat("\nQuiz solved = ", solved)
+})
+
+# Show output as HTML
+p(qu$ui)
 ```
 

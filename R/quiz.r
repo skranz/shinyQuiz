@@ -27,6 +27,15 @@ success: Great, your answer is correct!
 failure: Try again.
 '
 
+yaml = '
+question: |
+  Welche Auswirkungen wird so eine erhöhte Nachfrage vermutlich haben?
+mc:
+  - Die Arbeitslosigkeit steigt.
+  - Löhne steigen.*
+  - Preise steigen.*
+'
+
   app = eventsApp()
 
   qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
@@ -69,7 +78,8 @@ shinyQuiz = function(id=paste0("quiz_",sample.int(10e10,1)),qu=NULL, yaml,  quiz
   restore.point("shinyQuiz")
 
   if (is.null(qu)) {
-    qu = read.yaml(text=yaml)
+    yaml = enc2utf8(yaml)
+    qu = mark_utf8(read.yaml(text=yaml))
   }
 
   if (is.null(qu[["id"]])) {
@@ -103,10 +113,12 @@ init.quiz.part = function(part=qu$parts[[part.ind]], part.ind=1, qu, has.check.b
 
   if (!is.null(part[["sc"]])) {
     part$choices = part$sc
-    part$type = "sc"
+    part$multiple = FALSE
+    #part$type = "sc"
   } else if (!is.null(part[["mc"]])) {
     part$choices = part$mc
-    part$type = "mc"
+    part$multiple = TRUE
+    #part$type = "mc"
   }
 
 
@@ -217,8 +229,7 @@ quiz.part.ui = function(part, solution=FALSE, add.button=!is.null(part$checkBtnI
 }
 
 
-
-add.quiz.handlers = function(qu, quiz.handler=NULL){
+add.quiz.handlers = function(qu, quiz.handler=NULL, id=qu$id){
   restore.point("add.quiz.handlers")
   app = getApp()
   if (is.null(app)) {

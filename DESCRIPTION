@@ -1,0 +1,10 @@
+Package: shinyQuiz
+Type: Package
+Title: Quizes for shiny apps
+Version: 0.1
+Date: 2015-09-26
+Authors@R: person("Sebastian", "Kranz", email = "sebastian.kranz@uni-ulm.de", role = c("aut", "cre"))
+Description: Quizes for shiny apps
+License: GPL >= 2.0
+LazyData: TRUE
+Depends: markdown, shinyEvents

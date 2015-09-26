@@ -1,0 +1,63 @@
+---
+output: 
+  html_document: 
+    keep_md: yes
+---
+# Creating shiny widgets for quizes
+
+Works for shiny events apps (see shinyEvents package). A quiz is currently described in yaml format and then parsed into R.
+```{r include=FALSE}
+library(shinyQuiz)
+# A simple multiple choice quiz
+yaml = '
+question: What is 20*20?
+mc:
+  - 100
+  - 200
+  - 400*
+  - 500
+'
+
+qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
+  cat("\nQuiz solved = ", solved)
+})
+
+```
+
+
+```{r eval=FALSE}
+library(shinyQuiz)
+# A simple multiple choice quiz
+yaml = '
+question: What is 20*20?
+mc:
+  - 100
+  - 200
+  - 400*
+  - 500
+'
+
+# A shiny app with events handling from shinyEvents
+app = eventsApp()
+
+qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
+  cat("\nQuiz solved = ", solved)
+})
+app$ui = qu$ui
+runEventsApp(app, launch.browser=rstudio::viewer)
+
+```
+
+The output looks as follows:
+```{r results="asis",echo=FALSE}
+p(qu$ui)
+```
+
+
+### Showing a quiz solution as HTML
+
+```{r results='asis'}
+ui = quiz.ui(qu, solution=TRUE)
+p(ui)
+```
+

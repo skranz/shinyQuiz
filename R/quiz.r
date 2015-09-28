@@ -42,7 +42,7 @@ mc:
     cat("\nQuiz solved = ", solved)
   })
   app$ui = qu$ui
-  app$ui = quiz.ui(qu, solution=TRUE)
+  app$ui = quiz.ui(qu, solution=!TRUE)
   runEventsApp(app, launch.browser=rstudio::viewer)
 
 }
@@ -50,14 +50,14 @@ mc:
 quizDefaults = function(lang="en") {
   if (lang=="de") {
     list(
-      sucess = "richtig!",
+      success = "richtig!",
       failure= "leider falsch",
       success_color = "blue",
       failure_color = "red"
     )
   } else {
     list(
-      sucess = "correct",
+      success = "correct",
       failure= "not correct",
       success_color = "blue",
       failure_color = "red"
@@ -263,6 +263,7 @@ click.check.quiz = function(app=getApp(), part.ind, qu, quiz.handler=NULL, ...) 
 
   part = qu$parts[[part.ind]]
   answer = getInputValue(part$answerId)
+  restore.point("click.check.quiz.inner")
 
 
   if (part$type =="numeric") {

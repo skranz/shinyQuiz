@@ -29,7 +29,7 @@ qu = shinyQuiz(id="myquiz", yaml=yaml, quiz.handler=function(qu,solved,...) {
 
 ```{r eval=FALSE}
 library(shinyQuiz)
-# A simple multiple choice quiz
+# A simple single choice quiz
 yaml = '
 question: What is 20*20?
 sc:
@@ -56,6 +56,7 @@ The output looks as follows:
 ```{r results="asis",echo=FALSE}
 p(qu$ui)
 ```
+
 
 
 ### Showing a quiz solution as HTML
